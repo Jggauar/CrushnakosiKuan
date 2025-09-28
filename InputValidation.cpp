@@ -1,0 +1,108 @@
+
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <limits>
+using namespace std;
+
+float calculateAverage(float g1, float g2, float g3, float g4, float g5){
+    return (g1+g2+g3+g4+g5)/5.0f;
+}
+float findHighest(float g1, float g2, float g3, float g4, float g5){
+    float h = g1;
+    if(g2>h) h=g2; if(g3>h) h=g3; if(g4>h) h=g4; if(g5>h) h=g5;
+    return h;
+}
+float findLowest(float g1, float g2, float g3, float g4, float g5){
+    float l = g1;
+    if(g2<l) l=g2; if(g3<l) l=g3; if(g4<l) l=g4; if(g5<l) l=g5;
+    return l;
+}
+float getGrade(float average){
+    if(average>=96) return 1.0f;
+    else if(average>=94) return 1.25f;
+    else if(average>=92) return 1.5f;
+    else if(average>=90) return 1.75f;
+    else if(average>=88) return 2.0f;
+    else if(average>=86) return 2.25f;
+    else if(average>=84) return 2.5f;
+    else if(average>=82) return 2.75f;
+    else if(average>=80) return 3.0f;
+    return 5.0f;
+}
+int countPassing(float g1, float g2, float g3, float g4, float g5){
+    int c=0; if(g1>=60) c++; if(g2>=60) c++; if(g3>=60) c++; if(g4>=60) c++; if(g5>=60) c++;
+    return c;
+}
+
+
+float inputGrade(const string &subject){
+    float g;
+    while(true){
+        cout << "Enter " << subject << " grade (0-100): ";
+        if(!(cin >> g)){                      // non-numeric
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Invalid input. Please enter a number.\n";
+            continue;
+        }
+        if(g < 0.0f || g > 100.0f){
+            cout << "Invalid. Value must be 0-100. Try again.\n";
+            continue;
+        }
+        return g;
+    }
+}
+
+int main(){
+    string name, id;
+    int age, level;
+    cout<<"========================================\n";
+    cout<<"        STUDENT GRADE CALCULATOR\n";
+    cout<<"========================================\n\n";
+
+    cout<<"=== STUDENT PROFILE SETUP ===\n";
+    cout<<"Enter student name: "; getline(cin, name);
+    cout<<"Enter student ID: "; getline(cin, id);
+    cout<<"Enter student age: "; cin >> age;
+    cout<<"Enter grade level: "; cin >> level;
+    int birthYear = 2025 - age;
+    cout << "\nProfile created successfully!\n\n";
+
+    cout<<"=== GRADE ENTRY ===\n";
+    float mathGrade = inputGrade("Math");
+    float scienceGrade = inputGrade("Science");
+    float englishGrade = inputGrade("English");
+    float historyGrade = inputGrade("History");
+    float artGrade = inputGrade("Art");
+    cout << "\nGrades recorded successfully!\n\n";
+
+    float avg = calculateAverage(mathGrade, scienceGrade, englishGrade, historyGrade, artGrade);
+    float high = findHighest(mathGrade, scienceGrade, englishGrade, historyGrade, artGrade);
+    float low  = findLowest(mathGrade, scienceGrade, englishGrade, historyGrade, artGrade);
+    int passing = countPassing(mathGrade, scienceGrade, englishGrade, historyGrade, artGrade);
+
+    cout<<"========================================\n";
+    cout<<"           STUDENT REPORT CARD\n";
+    cout<<"========================================\n\n";
+
+    cout<<"STUDENT INFORMATION:\n";
+    cout<<"Name: "<<name<<"\nID: "<<id<<"\nAge: "<<age<<" years old\n";
+    cout<<"Grade Level: "<<level<<"th Grade\n";
+    cout<<"Birth Year: "<<birthYear<<"\n\n";
+
+    cout<<fixed<<setprecision(1);
+    cout<<"SUBJECT GRADES:\n";
+    cout<<"Math: "<<mathGrade<<"%\nScience: "<<scienceGrade<<"%\nEnglish: "<<englishGrade<<"%\n";
+    cout<<"History: "<<historyGrade<<"%\nArt: "<<artGrade<<"%\n\n";
+
+    cout<<"GRADE STATISTICS:\n";
+    cout<<fixed<<setprecision(2);
+    cout<<"Average Grade: "<<avg<<"%\n";
+    cout<<"Grade Equivalent: "<<getGrade(avg)<<"\n";
+    cout<<"Highest Grade: "<<high<<"%\nLowest Grade: "<<low<<"%\n";
+    cout<<"Subjects Passing: "<<passing<<" out of 5\n";
+
+    cout<<"========================================\n";
+    return 0;
+}
